@@ -1,7 +1,7 @@
 /**
  * This is the starting file of the project
  */
-const express = require ("express")
+const express = require("express")
 const mongoose = require("mongoose")
 const app = express()
 const server_config = require("./config/server.config")
@@ -19,41 +19,41 @@ app.use(express.json());
 //connection with mongodb
 mongoose.connect(db_config.DB_URL);
 const db = mongoose.connection
-db.on("error", ()=>{
+db.on("error", () => {
     console.log('Error while connecting to the mongoDB')
 })
 
-db.once("open", ()=>{
+db.once("open", () => {
     console.log("Connected to MongoDB")
     init()
 })
 
- async function init(){
-    try{
-         let user = user_model.findOne({userId: "admin"})
+async function init() {
+    try {
+        let user = user_model.findOne({ userId: "admin" })
 
-    if(user){
-        console.log("Admin is already present")
-        return
-    }
-    
-    }catch(err){
+        if (user) {
+            console.log("Admin is already present")
+            return
+        }
+
+    } catch (err) {
         console.log("Error while reading the date", err)
     }
 
 
-   
-    try{
+
+    try {
         user = await user_model.create({
-            name : "Vishwa",
-            userId :"Admin",
-            email : "zerogravity@gmail.com",
+            name: "Vishwa",
+            userId: "Admin",
+            email: "zerogravity@gmail.com",
             userType: "ADMIN",
-            password: bcrypt.hashSync("Welcome",8)
+            password: bcrypt.hashSync("Welcome", 8)
         })
         console.log("Admin created", user);
-        
-    }catch(err){
+
+    } catch (err) {
         console.log("Error while creating Admin", err)
 
     }
@@ -64,6 +64,6 @@ require("./routes/auth.routes")(app)
 /**
  * Start the server
  */
-app.listen(server_config.PORT, ()=>{
+app.listen(server_config.PORT, () => {
     console.log("Server is running on port num: ", server_config.PORT)
 })
